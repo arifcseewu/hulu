@@ -21,7 +21,7 @@ export default function Home({ results }) {
         <Navbar />
 
         {/* Results */}
-        <Result requests={results} />
+        <Result results={results} />
       </main>
     </div>
   );
@@ -29,14 +29,14 @@ export default function Home({ results }) {
 
 export async function getServerSideProps(context) {
   const genre = context.query.genre;
-  console.log(genre, "WOW");
   const request = await fetch(
-    `https://api.themoviedb.org/3/${
+    `https://api.themoviedb.org/3${
       Request[genre]?.url || Request.fetchTrending.url
     }`
   ).then((res) => res.json());
-  console.log(request, "Here");
   return {
-    props: request,
+    props: {
+      results: request.results,
+    },
   };
 }
